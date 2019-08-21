@@ -1,4 +1,4 @@
-@extends('layouts.app', ["current" => "index"])
+@extends('layouts.app', ["current" => "atualizar"])
 
 @section('content')
 
@@ -8,27 +8,37 @@
     <div class="col col-12">
         <nav aria-label="breadcrumb ">
             <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="#">Home</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Licitações</li>
+                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('licitacao') }}">Licitações</a></li>
+                <li class="breadcrumb-item active" aria-current="page">Atualizar Base de Dados</li>
             </ol>
         </nav>
     </div>
 
-       <div class="col col-3">
-           <a href="{{ route('atualize') }}">
-            <div class="card border-primary mb-3">
-                <div class="card-body">
-                    <div class="text-center">Atualizar Base de Dados</div>
+        @if($msg == 200)
+            <div class="col col-12">
+                <div class="alert alert-success alert-dismissible fade show" role="alert">
+                    Atualização Realizada com Sucesso!
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
                 </div>
             </div>
-        </a>
-        </div>
-
+        @elseif($msg == 404)
+            <div class="col col-12">
+                <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                    Recurso de API não Encontrado.
+                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                        <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+            </div>
+        @endif
 
         <div class="col col-12">
             <div class="card mb-3">
                 <div class="card-body">
-                    <form action="{{ route('licitacao') }}" method="GET">
+                    <form action="{{ route('atualizar') }}" method="GET">
                         <div class="row">
                             <div class="col col-4">
                                 <div class="form-group">
@@ -202,64 +212,11 @@
                             </div>
 
                             <div class="col col-4">
-                                <div class="form-group">
-                                    <input type="text" class="form-control" id="palavra_chave" name="palavra_chave" placeholder="Palavra Chave" value="{{ $filtro->getPalavra_chave() }}">
-                                </div>
-                            </div>
-
-                            <div class="col col-4">
-                                <button type="submit" class="btn btn-primary">Buscar Licitações</button>
+                                <button type="submit" class="btn btn-primary">Atualizar</button>
                             </div>
                         </div>
                     </form>
                 </div>
-            </div>
-        </div>
-
-        <div class="col col-12">
-            <div class="card mb-3">
-
-                <div class="card-body">
-                @if(isset($licitacoes))
-
-                    <div class="row">
-                        <div class="col col-12 text-right font-italic font-weight-bold">
-                            @if( count($licitacoes) > 1)
-                                {{  count($licitacoes) }} Licitações Encontradas
-                            @else 
-                                {{  count($licitacoes) }} Licitação Encontrada
-                            @endif
-                        </div>
-                    </div>                 
-
-                    <table class="table table-hover display" id="table_licitacoes">
-                        <thead>
-
-                        </thead>
-                        <tbody>
-                            @foreach($licitacoes as $licitacao)
-                            <tr>
-                                <td>
-                                    <strong>{{ $licitacao->id_licitacao }}</strong>
-                                    <strong>{{ $licitacao->titulo }} </strong> <br />
-                                    <strong>Ôrgão: </strong> {{ $licitacao->orgao}} <br />
-                                    <strong>Município: </strong> {{ $licitacao->municipio }} - {{ $licitacao->uf }} <br />
-                                    <strong>Data de Abertura: </strong> {{ $licitacao->abertura_datetime}} <br />
-                                    <strong>Descrição: </strong> <br />
-                                    {{ $licitacao->objeto }} <br />
-                                    <strong>Link: </strong> <a href="{{ $licitacao->link }}" target="_black">{{ $licitacao->link }}</a> <br />
-                                    <strong>Tipo: </strong> {{ $licitacao->tipo }}
-                                </td>
-                            </tr>
-                            @endforeach
-                        </tbody>
-                    </table>
-
-                    @else
-                    <p>error</p>
-                    @endif
-                </div>
-
             </div>
         </div>
 
