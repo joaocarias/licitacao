@@ -7,6 +7,7 @@ use App\Model\Licitacao\Licitacao;
 use App\Model\Licitacao\FiltroViewModel;
 use DateTime;
 use Exception;
+use Illuminate\Support\Facades\DB;
 
 class LicitacaoController extends Controller
 {
@@ -98,32 +99,46 @@ class LicitacaoController extends Controller
         
         $filtro = new FiltroViewModel($request->input('uf')
                                     , $request->input('municipio')
-                                    , null
+                                    , $request->input('palavra_chave')
+                                    , $request->input('tipo')
                                     , $request->input('data_inicio')
                                     , $request->input('data_final')
                 );
 
         $subQuery = "";
 
-        if($filtro->getMunicipio() != ""){
-            $subQuery = " municipio like '%".$filtro->getMunicipio()."%'
-                          or objeto like '%".$filtro->getMunicipio()."%'
-            ";   
+        if( !is_null($filtro->getPalavra_chave()) && $filtro->getPalavra_chave() != ""){
+             $subQuery = $subQuery . " and (municipio LIKE '%".$filtro->getPalavra_chave()."%'
+                                            or objeto like '%".$filtro->getPalavra_chave()."%'
+                                            or tipo LIKE '%".$filtro->getPalavra_chave()."%'
+                                        )";   
         }
-        
-        if($subQuery == ""){
-            $licitacoes = Licitacao::Where('uf', $filtro->getUf())                
-                                    ->get();    
-        }else{
-            $licitacoes = Licitacao::Where('uf', $filtro->getUf()) 
-                                    ->WhereRaw($subQuery)                       
-                                    ->get();
+
+        if( !is_null($filtro->getMunicipio()) && $filtro->getMunicipio() != ""){
+            $subQuery = $subQuery . " and (municipio LIKE '%".$filtro->getMunicipio()."%')";   
         }
-        
-         
+
+        if( !is_null($filtro->getTipo()) && $filtro->getTipo() != "" ){
+            $subQuery = $subQuery . " and (tipo LIKE '%".$filtro->getTipo()."%')";
+        }
+
+        if( !is_null($filtro->getData_inicio()) && $filtro->getData_inicio() != "" && !is_null($filtro->getData_final()) && $filtro->getData_final() != "" ){
+            $subQuery = $subQuery . " and ( abertura_datetime between '".$filtro->getData_inicio()."' AND '".$filtro->getData_final()."')";
+        }
+            
+        $licitacoes = DB::select(' select * from licitacaos 
+                                    WHERE uf = ? 
+                                    ' . $subQuery . '
+                                    ORDER BY aberturaComHora desc'
+                                , [$filtro->getUf()] );     
+                                
+        $listaTipo = DB::select(' select tipo from licitacaos
+                                     group by tipo
+                                     order by tipo asc ');
+                                    
+        $filtro->setListaTipos($listaTipo);
 
         return view('licitacao.licitacoes', ['licitacoes' => $licitacoes, 'filtro' => $filtro ] );
-
     }
 
     public function create()

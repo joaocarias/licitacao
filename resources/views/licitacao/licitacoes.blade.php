@@ -198,20 +198,35 @@
                                 </div>
                             </div>
 
-                            <!--
                             <div class="col col-3">
                                 <div class="form-group">
-                                    <label for="tipo">Tipo</label>
-                                    <input type="text" class="form-control" id="tipo" name="tipo" placeholder="Palavra Chave" value="{{ $filtro->getPalavra_chave() }}">
+                                    <label for="palavra_chave">Palavra Chave</label>
+                                    <input type="text" class="form-control" id="palavra_chave" name="palavra_chave" placeholder="Palavra Chave" value="{{ $filtro->getPalavra_chave() }}">
                                 </div>
                             </div>
 
                             <div class="col col-3">
                                 <div class="form-group">
-                                    <label for="palavra_chave">Tipo</label>
-                                    <input type="text" class="form-control" id="palavra_chave" name="palavra_chave" placeholder="Palavra Chave" value="{{ $filtro->getPalavra_chave() }}">
+                                    <label for="tipo">Tipo</label>
+                                    <select class="form-control" id="tipo" name="tipo">
+
+                                        @if(is_null($filtro->getTipo()) || $filtro->getTipo() == "")
+                                            <option selected="selected" value="">-- Selecione --</option>
+                                        @else
+                                           <option value="">-- Selecione --</option>
+                                        @endif 
+
+                                        @foreach($filtro->getListaTipos() as $row)
+                                            @if($filtro->getTipo() == $row->tipo)
+                                                <option selected="selected" value="{{ $row->tipo }}">{{ $row->tipo }}</option>
+                                            @else                
+                                                <option value="{{ $row->tipo }}">{{ $row->tipo }}</option>
+                                            @endif
+                                        @endforeach
+
+                                    </select>
                                 </div>
-                            </div> -->
+                            </div>
 
                             <div class="col col-3">
                                 <div class="form-group">

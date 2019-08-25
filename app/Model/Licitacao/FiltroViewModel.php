@@ -10,8 +10,9 @@ class FiltroViewModel
     private $palavra_chave;
     private $data_inicio;
     private $data_final;
+    private $listaTipos;
 
-    function __construct($uf = null, $municipio = null, $palavra_chave = null, $data_inicio = null
+    function __construct($uf = null, $municipio = null, $palavra_chave = null, $tipo = null, $data_inicio = null
                 , $data_final = null)
     {
         $this->uf = is_null($uf) ? "RN" : $uf;
@@ -19,6 +20,7 @@ class FiltroViewModel
         $this->palavra_chave = $palavra_chave;
         $this->data_inicio = is_null($data_inicio) ? "2019-01-01" : $data_inicio;
         $this->data_final = is_null($data_final) ? "2019-12-31" : $data_final;
+        $this->tipo = $tipo;
     }
 
     public function getUf(){
@@ -59,5 +61,21 @@ class FiltroViewModel
 
     public function setPalavra_chave($palavra_chave){
         $this->palavra_chave = $palavra_chave;
+    }
+
+    public function setListaTipos($lista){
+        $this->listaTipos = $lista;
+    }
+
+    public function getListaTipos(){
+        return $this->listaTipos;
+    }
+
+    public function setTipo($tipo){
+        $this->tipo = $tipo;
+    }
+
+    public function getTipo(){
+        return $this->tipo;
     }
 }
