@@ -103,18 +103,20 @@ class LicitacaoController extends Controller
                                     , $request->input('data_final')
                 );
 
-        $subQueryMunicipio = "";
+        $subQuery = "";
 
         if($filtro->getMunicipio() != ""){
-            $subQueryMunicipio = " municipio like '%".$filtro->getMunicipio()."%'";       
+            $subQuery = " municipio like '%".$filtro->getMunicipio()."%'
+                          or objeto like '%".$filtro->getMunicipio()."%'
+            ";   
         }
         
-        if($subQueryMunicipio == ""){
-            $licitacoes = Licitacao::Where('uf', $filtro->getUf())                       
+        if($subQuery == ""){
+            $licitacoes = Licitacao::Where('uf', $filtro->getUf())                
                                     ->get();    
         }else{
             $licitacoes = Licitacao::Where('uf', $filtro->getUf()) 
-                                    ->WhereRaw($subQueryMunicipio)                       
+                                    ->WhereRaw($subQuery)                       
                                     ->get();
         }
         
