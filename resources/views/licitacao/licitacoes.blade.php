@@ -1,21 +1,11 @@
-@extends('layouts.app', ["current" => "licitacoes"])
+@extends('layouts.app', ['activePage' => 'licitacoes', 'titlePage' => __('Exibir Licitações')])
 
 @section('content')
+  <div class="content">
+    <div class="container-fluid">
 
-
-<div class="container">
-    <div class="row justify-content">
-        <div class="col col-12">
-            <nav aria-label="breadcrumb ">
-                <ol class="breadcrumb">
-                    <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                    <li class="breadcrumb-item"><a href="{{ route('licitacao') }}">Licitações</a></li>
-                    <li class="breadcrumb-item active" aria-current="page">Exibir Licitações</li>
-                </ol>
-            </nav>
-        </div>
-
-        <div class="col col-12">
+    
+    <div class="col col-12">
             <div class="card mb-3">
                 <div class="card-body">
                     <form action="{{ route('licitacoes') }}" method="GET">
@@ -297,7 +287,20 @@
 
         </div>
         @endif
-    </div>
-</div>
 
+
+
+
+    </div>
+  </div>
 @endsection
+
+@push('js')
+  <script>
+    $(document).ready(function() {
+      // Javascript method's body can be found in assets/js/demos.js
+      md.initDashboardPageCharts();
+    });
+  </script>
+@endpush
+

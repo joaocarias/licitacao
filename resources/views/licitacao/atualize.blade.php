@@ -1,48 +1,42 @@
-@extends('layouts.app', ["current" => "atualizar"])
+@extends('layouts.app', ['activePage' => 'atualize', 'titlePage' => __('Atualizar Base de Dados')])
 
 @section('content')
-
-
- <div class="container">
-    <div class="row justify-content">
-    <div class="col col-12">
-        <nav aria-label="breadcrumb ">
-            <ol class="breadcrumb">
-                <li class="breadcrumb-item"><a href="{{ route('home') }}">Home</a></li>
-                <li class="breadcrumb-item"><a href="{{ route('licitacao') }}">Licitações</a></li>
-                <li class="breadcrumb-item active" aria-current="page">Atualizar Base de Dados</li>
-            </ol>
-        </nav>
-    </div>
+<div class="content">
+    <div class="container-fluid">
 
         @if($msg == 200)
-            <div class="col col-12">
-                <div class="alert alert-success alert-dismissible fade show" role="alert">
-                    Atualização Realizada com Sucesso!
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+        <div class="col col-12">
+            <div class="alert alert-success alert-dismissible fade show" role="alert">
+                Atualização Realizada com Sucesso!
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+        </div>
         @elseif($msg == 404)
-            <div class="col col-12">
-                <div class="alert alert-danger alert-dismissible fade show" role="alert">
-                    Recurso de API não Encontrado.
-                    <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
+        <div class="col col-12">
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                Recurso de API não Encontrado.
+                <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
             </div>
+        </div>
         @endif
 
-        <div class="col col-12">
-            <div class="card mb-3">
-                <div class="card-body">
-                    <form action="{{ route('store') }}" method="GET">
-                        <div class="row">
-                            <div class="col col-4">
-                                <div class="form-group">
+        <div class="row">
+            <div class="col-md-12">
 
+                <form action="{{ route('store') }}" method="GET"  >
+
+                    <div class="card ">
+                        <div class="card-header card-header-primary">
+                            <h4 class="card-title">{{ __('Atualizar') }}</h4>
+                            <p class="card-category"></p>
+                        </div>
+                        <div class="card-body">
+                            <div class="row">
+                                <div class="col-md-6">                                    
                                     <select class="form-control" id="uf" name="uf">
 
                                         @if($filtro->getUf() == "AC")
@@ -207,20 +201,29 @@
                                         <option value="TO">Tocantins</option>
                                         @endif
 
-                                    </select>
+                                    </select>                                   
+                                </div>                           
+                                
+                                <div class="col-md-6">                                
+                                    <button type="submit" class="btn btn-primary">Atualizar</button>                               
                                 </div>
                             </div>
-
-                            <div class="col col-4">
-                                <button type="submit" class="btn btn-primary">Atualizar</button>
-                            </div>
                         </div>
-                    </form>
-                </div>
+                    </div>
+                </form>
             </div>
+
         </div>
 
     </div>
-</div> 
-
+</div>
 @endsection
+
+@push('js')
+<script>
+    $(document).ready(function() {
+        // Javascript method's body can be found in assets/js/demos.js
+        md.initDashboardPageCharts();
+    });
+</script>
+@endpush
